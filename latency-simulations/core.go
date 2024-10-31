@@ -19,6 +19,31 @@ func simulateAll() {
 
 	var err error
 
+	sqliteSim, err := simulate(SQLite)
+	if err != nil {
+		panic(err)
+	}
+
+	sameBoxSim, err := simulate(SameBox)
+	if err != nil {
+		panic(err)
+	}
+
+	intraAZSim, err := simulate(IntraAZ)
+	if err != nil {
+		panic(err)
+	}
+
+	interAZSim, err := simulate(InterAZ)
+	if err != nil {
+		panic(err)
+	}
+
+	interRegionSim, err := simulate(InterRegion)
+	if err != nil {
+		panic(err)
+	}
+
 	// drop table if it exists; ensures a clean slate
 	_, err = db.Exec(`DROP TABLE IF EXISTS latency_logs`)
 	if err != nil {
@@ -27,15 +52,15 @@ func simulateAll() {
 
 	// create table if it doesn't exist
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS latency_logs (
-		label TEXT NOT NULL PRIMARY KEY,
-		median_latency REAL,
-		p10_latency REAL,
-		p25_latency REAL,
-		p75_latency REAL,
-		p90_latency REAL,
-		p95_latency REAL,
-		count REAL
-	)`)
+			label TEXT NOT NULL PRIMARY KEY,
+			median_latency REAL,
+			p10_latency REAL,
+			p25_latency REAL,
+			p75_latency REAL,
+			p90_latency REAL,
+			p95_latency REAL,
+			count REAL
+		)`)
 	if err != nil {
 		panic(err)
 	}
@@ -46,42 +71,22 @@ func simulateAll() {
 		panic(err)
 	}
 
-	sqliteSim, err := simulate(SQLite)
-	if err != nil {
-		panic(err)
-	}
 	logLatency("SQLite Read1", sqliteSim.Read1)
 	logLatency("SQLite Read2", sqliteSim.Read2)
 	logLatency("SQLite Write1", sqliteSim.Write1)
 
-	sameBoxSim, err := simulate(SameBox)
-	if err != nil {
-		panic(err)
-	}
 	logLatency("SameBox Read1", sameBoxSim.Read1)
 	logLatency("SameBox Read2", sameBoxSim.Read2)
 	logLatency("SameBox Write1", sameBoxSim.Write1)
 
-	intraAZSim, err := simulate(IntraAZ)
-	if err != nil {
-		panic(err)
-	}
 	logLatency("IntraAZ Read1", intraAZSim.Read1)
 	logLatency("IntraAZ Read2", intraAZSim.Read2)
 	logLatency("IntraAZ Write1", intraAZSim.Write1)
 
-	interAZSim, err := simulate(InterAZ)
-	if err != nil {
-		panic(err)
-	}
 	logLatency("InterAZ Read1", interAZSim.Read1)
 	logLatency("InterAZ Read2", interAZSim.Read2)
 	logLatency("InterAZ Write1", interAZSim.Write1)
 
-	interRegionSim, err := simulate(InterRegion)
-	if err != nil {
-		panic(err)
-	}
 	logLatency("InterRegion Read1", interRegionSim.Read1)
 	logLatency("InterRegion Read2", interRegionSim.Read2)
 	logLatency("InterRegion Write1", interRegionSim.Write1)
