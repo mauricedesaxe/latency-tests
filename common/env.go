@@ -27,6 +27,12 @@ type Environment struct {
 	BASE_URL    string `env:"BASE_URL" default:"http://localhost:3000"`
 
 	// * Add more environment variables here
+
+	// Postgres
+	SAME_BOX_POSTGRES_URL     string `env:"SAME_BOX_POSTGRES_URL"`
+	INTRA_AZ_POSTGRES_URL     string `env:"INTRA_AZ_POSTGRES_URL"`
+	INTER_AZ_POSTGRES_URL     string `env:"INTER_AZ_POSTGRES_URL"`
+	INTER_REGION_POSTGRES_URL string `env:"INTER_REGION_POSTGRES_URL"`
 }
 
 func (e *Environment) init() {

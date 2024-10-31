@@ -3,8 +3,8 @@ package latency_simulations
 import (
 	"database/sql"
 	"fmt"
+	"go-on-rails/common"
 	"math/rand"
-	"os"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -16,7 +16,7 @@ func initPostgres() {
 		panic(err)
 	}
 
-	sameBoxDb, err := sql.Open("postgres", os.Getenv("SAME_BOX_POSTGRES_URL"))
+	sameBoxDb, err := sql.Open("postgres", common.Env.SAME_BOX_POSTGRES_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +31,7 @@ func initPostgres() {
 	fmt.Printf("Same Box Postgres Write1: %+v\n", simulation.Write1)
 	logLatency("Same Box Postgres Write1", simulation.Write1)
 
-	intraAZDb, err := sql.Open("postgres", os.Getenv("INTRA_AZ_POSTGRES_URL"))
+	intraAZDb, err := sql.Open("postgres", common.Env.INTRA_AZ_POSTGRES_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -46,7 +46,7 @@ func initPostgres() {
 	fmt.Printf("Intra AZ Postgres Write1: %+v\n", simulation.Write1)
 	logLatency("Intra AZ Postgres Write1", simulation.Write1)
 
-	interAZDb, err := sql.Open("postgres", os.Getenv("INTER_AZ_POSTGRES_URL"))
+	interAZDb, err := sql.Open("postgres", common.Env.INTER_AZ_POSTGRES_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -61,7 +61,7 @@ func initPostgres() {
 	fmt.Printf("Inter AZ Postgres Write1: %+v\n", simulation.Write1)
 	logLatency("Inter AZ Postgres Write1", simulation.Write1)
 
-	interRegionDb, err := sql.Open("postgres", os.Getenv("INTER_REGION_POSTGRES_URL"))
+	interRegionDb, err := sql.Open("postgres", common.Env.INTER_REGION_POSTGRES_URL)
 	if err != nil {
 		panic(err)
 	}
