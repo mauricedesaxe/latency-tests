@@ -6,6 +6,12 @@ import (
 	"github.com/montanaflynn/stats"
 )
 
+const (
+	productCount          = 1_000
+	reviewCountPerProduct = 10
+	queryCount            = 100
+)
+
 type Simulation struct {
 	Read1  LatencyStats
 	Read2  LatencyStats
