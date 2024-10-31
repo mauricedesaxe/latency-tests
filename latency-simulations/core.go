@@ -80,7 +80,9 @@ func simulateAll() error {
 			p75_latency REAL,
 			p90_latency REAL,
 			p95_latency REAL,
-			count REAL
+			count REAL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)`)
 	if err != nil {
 		return err
@@ -571,8 +573,8 @@ type LatencyLog struct {
 // Logs the latency stats to the database.
 func logLatency(db *sqlx.Tx, label string, latency LatencyStats) error {
 	_, err := db.NamedExec(`
-		INSERT INTO latency_logs (label, median_latency, p10_latency, p25_latency, p75_latency, p90_latency, p95_latency, count) 
-		VALUES (:label, :median_latency, :p10_latency, :p25_latency, :p75_latency, :p90_latency, :p95_latency, :count)
+		INSERT INTO latency_logs (label, median_latency, p10_latency, p25_latency, p75_latency, p90_latency, p95_latency, count, created_at, updated_at) 
+		VALUES (:label, :median_latency, :p10_latency, :p25_latency, :p75_latency, :p90_latency, :p95_latency, :count, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 		ON CONFLICT (label) DO UPDATE SET
 			median_latency = :median_latency,
 			p10_latency = :p10_latency,
@@ -580,7 +582,10 @@ func logLatency(db *sqlx.Tx, label string, latency LatencyStats) error {
 			p75_latency = :p75_latency,
 			p90_latency = :p90_latency,
 			p95_latency = :p95_latency,
-			count = :count`, LatencyLog{
+			count = :count,
+			created_at = CURRENT_TIMESTAMP,
+			updated_at = CURRENT_TIMESTAMP
+		`, LatencyLog{
 		Label:         label,
 		MedianLatency: latency.MedianLatency,
 		P10Latency:    latency.P10Latency,
