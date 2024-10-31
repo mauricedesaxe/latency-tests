@@ -16,21 +16,65 @@ func initPostgres() {
 		panic(err)
 	}
 
-	db, err := sql.Open("postgres", os.Getenv("LOCAL_POSTGRES_URL"))
+	sameBoxDb, err := sql.Open("postgres", os.Getenv("SAME_BOX_POSTGRES_URL"))
 	if err != nil {
 		panic(err)
 	}
+	simulation, err := simulatePostgresLatency(sameBoxDb)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Same Box Postgres Read1: %+v\n", simulation.Read1)
+	logLatency("Same Box Postgres Read1", simulation.Read1)
+	fmt.Printf("Same Box Postgres Read2: %+v\n", simulation.Read2)
+	logLatency("Same Box Postgres Read2", simulation.Read2)
+	fmt.Printf("Same Box Postgres Write1: %+v\n", simulation.Write1)
+	logLatency("Same Box Postgres Write1", simulation.Write1)
 
-	simulation, err := simulatePostgresLatency(db)
+	intraAZDb, err := sql.Open("postgres", os.Getenv("INTRA_AZ_POSTGRES_URL"))
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Postgres Read1: %+v\n", simulation.Read1)
-	logLatency("Postgres Read1", simulation.Read1)
-	fmt.Printf("Postgres Read2: %+v\n", simulation.Read2)
-	logLatency("Postgres Read2", simulation.Read2)
-	fmt.Printf("Postgres Write1: %+v\n", simulation.Write1)
-	logLatency("Postgres Write1", simulation.Write1)
+	simulation, err = simulatePostgresLatency(intraAZDb)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Intra AZ Postgres Read1: %+v\n", simulation.Read1)
+	logLatency("Intra AZ Postgres Read1", simulation.Read1)
+	fmt.Printf("Intra AZ Postgres Read2: %+v\n", simulation.Read2)
+	logLatency("Intra AZ Postgres Read2", simulation.Read2)
+	fmt.Printf("Intra AZ Postgres Write1: %+v\n", simulation.Write1)
+	logLatency("Intra AZ Postgres Write1", simulation.Write1)
+
+	interAZDb, err := sql.Open("postgres", os.Getenv("INTER_AZ_POSTGRES_URL"))
+	if err != nil {
+		panic(err)
+	}
+	simulation, err = simulatePostgresLatency(interAZDb)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Inter AZ Postgres Read1: %+v\n", simulation.Read1)
+	logLatency("Inter AZ Postgres Read1", simulation.Read1)
+	fmt.Printf("Inter AZ Postgres Read2: %+v\n", simulation.Read2)
+	logLatency("Inter AZ Postgres Read2", simulation.Read2)
+	fmt.Printf("Inter AZ Postgres Write1: %+v\n", simulation.Write1)
+	logLatency("Inter AZ Postgres Write1", simulation.Write1)
+
+	interRegionDb, err := sql.Open("postgres", os.Getenv("INTER_REGION_POSTGRES_URL"))
+	if err != nil {
+		panic(err)
+	}
+	simulation, err = simulatePostgresLatency(interRegionDb)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Inter Region Postgres Read1: %+v\n", simulation.Read1)
+	logLatency("Inter Region Postgres Read1", simulation.Read1)
+	fmt.Printf("Inter Region Postgres Read2: %+v\n", simulation.Read2)
+	logLatency("Inter Region Postgres Read2", simulation.Read2)
+	fmt.Printf("Inter Region Postgres Write1: %+v\n", simulation.Write1)
+	logLatency("Inter Region Postgres Write1", simulation.Write1)
 }
 
 func simulatePostgresLatency(db *sql.DB) (Simulation, error) {
