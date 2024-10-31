@@ -6,7 +6,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
-RUN apk add --no-cache make curl gcc musl-dev
+RUN apk add --no-cache make curl gcc musl-dev postgresql-client
 
 ARG ARCH=linux-x64
 ARG ENV=prod
