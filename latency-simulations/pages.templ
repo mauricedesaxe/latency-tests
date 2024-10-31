@@ -38,22 +38,22 @@ templ home_page(logs []LatencyLog) {
 												{ log.Label }
 											</td>
 											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
-												{ fmt.Sprintf("%.2f", log.MedianLatency) } nanoseconds
+												{ fmt.Sprintf("%.2f", log.MedianLatency/1000000) } ms
 											</td>
 											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
-												{ fmt.Sprintf("%.2f", log.P10Latency) } nanoseconds
+												{ fmt.Sprintf("%.2f", log.P10Latency/1000000) } ms
 											</td>
 											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
-												{ fmt.Sprintf("%.2f", log.P25Latency) } nanoseconds
+												{ fmt.Sprintf("%.2f", log.P25Latency/1000000) } ms
 											</td>
 											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
-												{ fmt.Sprintf("%.2f", log.P75Latency) } nanoseconds
+												{ fmt.Sprintf("%.2f", log.P75Latency/1000000) } ms
 											</td>
 											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
-												{ fmt.Sprintf("%.2f", log.P90Latency) } nanoseconds
+												{ fmt.Sprintf("%.2f", log.P90Latency/1000000) } ms
 											</td>
 											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
-												{ fmt.Sprintf("%.2f", log.P95Latency) } nanoseconds
+												{ fmt.Sprintf("%.2f", log.P95Latency/1000000) } ms
 											</td>
 											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
 												{ fmt.Sprintf("%.2f", log.Count) }
