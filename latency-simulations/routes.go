@@ -52,4 +52,12 @@ func AddRoutes(app *fiber.App) {
 
 		return common.RenderTempl(c, home_page(logs))
 	})
+
+	app.Get("/simulate", func(c *fiber.Ctx) error {
+		err := simulateAll()
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		return c.Redirect("/")
+	})
 }
