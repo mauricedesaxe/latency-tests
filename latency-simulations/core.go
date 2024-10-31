@@ -288,7 +288,7 @@ func simulateSQLiteLatency(db *sqlx.DB) (Simulation, error) {
 		var id int
 		var name string
 		var price float64
-		err = db.QueryRow(`SELECT id, name, price FROM products WHERE name = ? LIMIT 1`, fmt.Sprintf("product%d", rand.Intn(1_000))).Scan(&id, &name, &price)
+		err = db.QueryRow(`SELECT id, name, price FROM products WHERE name = ? LIMIT 1`, fmt.Sprintf("product%d", rand.Intn(productCount))).Scan(&id, &name, &price)
 		if err != nil {
 			return Simulation{
 				Read1: statsRead1,
