@@ -29,7 +29,7 @@ type Environment struct {
 	// * Add more environment variables here
 
 	// Postgres
-	SAME_BOX_POSTGRES_URL     string `env:"SAME_BOX_POSTGRES_URL" default:"postgresql://postgres:postgres@localhost:5432/postgres?sslmode=disable"`
+	SAME_BOX_POSTGRES_URL     string `env:"SAME_BOX_POSTGRES_URL" default:"postgresql://postgres:postgres@27.0.0.1:5432/postgres?sslmode=disable"`
 	INTRA_AZ_POSTGRES_URL     string `env:"INTRA_AZ_POSTGRES_URL"`
 	INTER_AZ_POSTGRES_URL     string `env:"INTER_AZ_POSTGRES_URL"`
 	INTER_REGION_POSTGRES_URL string `env:"INTER_REGION_POSTGRES_URL"`
