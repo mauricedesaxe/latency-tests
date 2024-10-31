@@ -23,7 +23,7 @@ const (
 	InterRegion SimulationType = "inter_region"
 )
 
-func simulateAll() {
+func simulateAll() error {
 	allLock.Lock()
 	defer allLock.Unlock()
 
@@ -31,32 +31,32 @@ func simulateAll() {
 
 	sqliteSim, err := simulate(SQLite)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	sameBoxSim, err := simulate(SameBox)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	intraAZSim, err := simulate(IntraAZ)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	interAZSim, err := simulate(InterAZ)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	interRegionSim, err := simulate(InterRegion)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	tx, err := db.Beginx()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer func() {
 		if err != nil {
@@ -68,7 +68,7 @@ func simulateAll() {
 	// drop table if it exists; ensures a clean slate
 	_, err = tx.Exec(`DROP TABLE IF EXISTS latency_logs`)
 	if err != nil {
-		return
+		return err
 	}
 
 	// create table if it doesn't exist
@@ -83,13 +83,13 @@ func simulateAll() {
 			count REAL
 		)`)
 	if err != nil {
-		return
+		return err
 	}
 
 	// create index on label
 	_, err = tx.Exec(`CREATE INDEX IF NOT EXISTS idx_label ON latency_logs (label)`)
 	if err != nil {
-		return
+		return err
 	}
 
 	logs := []struct {
@@ -115,14 +115,16 @@ func simulateAll() {
 	for _, log := range logs {
 		err = logLatency(tx, log.label, log.stats)
 		if err != nil {
-			return
+			return err
 		}
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		return
+		return err
 	}
+
+	return nil
 }
 
 type LatencyStats struct {
