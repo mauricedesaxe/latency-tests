@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-on-rails/auth"
+	_ "go-on-rails/latency-simulations"
 	"go-on-rails/marketing"
 	"log"
 
