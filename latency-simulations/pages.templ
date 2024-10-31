@@ -14,7 +14,7 @@ templ home_page(logs []LatencyLog) {
 					<div class="sm:flex-auto">
 						<h2 class="dark:text-gray-100 font-semibold text-base text-gray-900">Latency Logs</h2>
 						<p class="dark:text-gray-300 mt-2 text-gray-700 text-sm">
-							A list of all latency measurements including percentile breakdowns.
+							A list of all latency measurements including percentile breakdowns. Read more about how this works below.
 						</p>
 					</div>
 					<div class="mt-4 sm:flex-none sm:ml-16 sm:mt-0">
@@ -105,5 +105,36 @@ templ home_page(logs []LatencyLog) {
 				</div>
 			</div>
 		</main>
+		<div class="bg-white lg:px-8 px-6 py-32">
+			<div class="max-w-3xl mx-auto text-base/7 text-gray-700">
+				<p class="font-semibold text-base/7 text-indigo-600">Latency Simulations</p>
+				<h1 class="font-semibold mt-2 sm:text-5xl text-4xl text-gray-900 text-pretty tracking-tight">Database Latency Analysis Tool</h1>
+				<p class="mt-6 text-xl/8">This tool simulates and measures database latency across different deployment scenarios, from local SQLite to cross-region database connections. It helps developers understand the real-world performance implications of different database architectures.</p>
+				<div class="max-w-2xl mt-10">
+					<p>The simulator runs latency tests across five different scenarios, collecting detailed performance metrics for each case. The results are stored in a SQLite database and displayed in the table above.</p>
+					<ul role="list" class="max-w-xl mt-8 space-y-8 text-gray-600">
+						<li class="flex gap-x-3">
+							<svg class="flex-none h-5 mt-1 text-indigo-600 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+								<path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd"></path>
+							</svg>
+							<span><strong class="font-semibold text-gray-900">Comprehensive Scenarios.</strong> Tests SQLite, same-box PostgreSQL, intra-AZ, inter-AZ, and inter-region database connections to provide a complete picture of latency impacts.</span>
+						</li>
+						<li class="flex gap-x-3">
+							<svg class="flex-none h-5 mt-1 text-indigo-600 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+								<path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd"></path>
+							</svg>
+							<span><strong class="font-semibold text-gray-900">Detailed Metrics.</strong> Captures multiple percentiles (p10, p25, p50, p75, p90, p95) to give a complete picture of latency distribution.</span>
+						</li>
+						<li class="flex gap-x-3">
+							<svg class="flex-none h-5 mt-1 text-indigo-600 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+								<path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd"></path>
+							</svg>
+							<span><strong class="font-semibold text-gray-900">Real-time Updates.</strong> Results are automatically logged to the database and can be refreshed via the simulate button above.</span>
+						</li>
+					</ul>
+					<p class="mt-8">The simulation runs multiple iterations for each scenario to ensure statistical significance. Results are stored with timestamps to track changes over time and allow for historical comparisons.</p>
+				</div>
+			</div>
+		</div>
 	}
 }
