@@ -71,25 +71,25 @@ func simulateAll() {
 		panic(err)
 	}
 
-	logLatency("SQLite Read1", sqliteSim.Read1)
-	logLatency("SQLite Read2", sqliteSim.Read2)
-	logLatency("SQLite Write1", sqliteSim.Write1)
+	logLatency(db, "SQLite Read1", sqliteSim.Read1)
+	logLatency(db, "SQLite Read2", sqliteSim.Read2)
+	logLatency(db, "SQLite Write1", sqliteSim.Write1)
 
-	logLatency("SameBox Read1", sameBoxSim.Read1)
-	logLatency("SameBox Read2", sameBoxSim.Read2)
-	logLatency("SameBox Write1", sameBoxSim.Write1)
+	logLatency(db, "SameBox Read1", sameBoxSim.Read1)
+	logLatency(db, "SameBox Read2", sameBoxSim.Read2)
+	logLatency(db, "SameBox Write1", sameBoxSim.Write1)
 
-	logLatency("IntraAZ Read1", intraAZSim.Read1)
-	logLatency("IntraAZ Read2", intraAZSim.Read2)
-	logLatency("IntraAZ Write1", intraAZSim.Write1)
+	logLatency(db, "IntraAZ Read1", intraAZSim.Read1)
+	logLatency(db, "IntraAZ Read2", intraAZSim.Read2)
+	logLatency(db, "IntraAZ Write1", intraAZSim.Write1)
 
-	logLatency("InterAZ Read1", interAZSim.Read1)
-	logLatency("InterAZ Read2", interAZSim.Read2)
-	logLatency("InterAZ Write1", interAZSim.Write1)
+	logLatency(db, "InterAZ Read1", interAZSim.Read1)
+	logLatency(db, "InterAZ Read2", interAZSim.Read2)
+	logLatency(db, "InterAZ Write1", interAZSim.Write1)
 
-	logLatency("InterRegion Read1", interRegionSim.Read1)
-	logLatency("InterRegion Read2", interRegionSim.Read2)
-	logLatency("InterRegion Write1", interRegionSim.Write1)
+	logLatency(db, "InterRegion Read1", interRegionSim.Read1)
+	logLatency(db, "InterRegion Read2", interRegionSim.Read2)
+	logLatency(db, "InterRegion Write1", interRegionSim.Write1)
 }
 
 type SimulationType string
@@ -543,7 +543,7 @@ type LatencyLog struct {
 }
 
 // Logs the latency stats to the database.
-func logLatency(label string, latency LatencyStats) error {
+func logLatency(db *sqlx.DB, label string, latency LatencyStats) error {
 	_, err := db.NamedExec(`
 		INSERT INTO latency_logs (label, median_latency, p10_latency, p25_latency, p75_latency, p90_latency, p95_latency, count) 
 		VALUES (:label, :median_latency, :p10_latency, :p25_latency, :p75_latency, :p90_latency, :p95_latency, :count)
