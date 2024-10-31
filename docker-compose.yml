@@ -6,6 +6,8 @@ services:
       - "3000:3000"
     volumes:
       - db-volume:/root/db
+    env_file:
+      - .env
 
 volumes:
   db-volume:
