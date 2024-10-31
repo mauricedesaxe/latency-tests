@@ -13,6 +13,16 @@ import (
 
 var allLock sync.Mutex
 
+type SimulationType string
+
+const (
+	SQLite      SimulationType = "sqlite"
+	SameBox     SimulationType = "same_box"
+	IntraAZ     SimulationType = "intra_az"
+	InterAZ     SimulationType = "inter_az"
+	InterRegion SimulationType = "inter_region"
+)
+
 func simulateAll() {
 	allLock.Lock()
 	defer allLock.Unlock()
@@ -114,16 +124,6 @@ func simulateAll() {
 		return
 	}
 }
-
-type SimulationType string
-
-const (
-	SQLite      SimulationType = "sqlite"
-	SameBox     SimulationType = "same_box"
-	IntraAZ     SimulationType = "intra_az"
-	InterAZ     SimulationType = "inter_az"
-	InterRegion SimulationType = "inter_region"
-)
 
 type LatencyStats struct {
 	MedianLatency float64
