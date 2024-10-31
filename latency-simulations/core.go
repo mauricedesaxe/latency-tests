@@ -11,6 +11,18 @@ import (
 	"github.com/montanaflynn/stats"
 )
 
+func init() {
+	err := initDB()
+	if err != nil {
+		panic(err)
+	}
+
+	err = simulateAll()
+	if err != nil {
+		panic(err)
+	}
+}
+
 var allLock sync.Mutex
 
 type SimulationType string
