@@ -9,8 +9,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func init() {
-	db, err := sql.Open("sqlite3", "./db/latency.sqlite?_journal_mode=WAL&_synchronous=NORMAL&_busy_timeout=5000&_cache_size=-2000")
+func initSQLite() {
+	db, err := sql.Open("sqlite3", "./db/latency_simulations.sqlite?_journal_mode=WAL&_synchronous=NORMAL&_busy_timeout=5000&_cache_size=-2000")
 	if err != nil {
 		panic(err)
 	}
@@ -41,8 +41,11 @@ func init() {
 		panic(err)
 	}
 	fmt.Printf("SQLite Read1: %+v\n", simulation.Read1)
+	logLatency("SQLite Read1", simulation.Read1)
 	fmt.Printf("SQLite Read2: %+v\n", simulation.Read2)
+	logLatency("SQLite Read2", simulation.Read2)
 	fmt.Printf("SQLite Write1: %+v\n", simulation.Write1)
+	logLatency("SQLite Write1", simulation.Write1)
 }
 
 func simulateSQLiteLatency(db *sql.DB) (Simulation, error) {

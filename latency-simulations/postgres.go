@@ -11,7 +11,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func init() {
+func initPostgres() {
 	if err := godotenv.Load(); err != nil {
 		panic(err)
 	}
@@ -26,8 +26,11 @@ func init() {
 		panic(err)
 	}
 	fmt.Printf("Postgres Read1: %+v\n", simulation.Read1)
+	logLatency("Postgres Read1", simulation.Read1)
 	fmt.Printf("Postgres Read2: %+v\n", simulation.Read2)
+	logLatency("Postgres Read2", simulation.Read2)
 	fmt.Printf("Postgres Write1: %+v\n", simulation.Write1)
+	logLatency("Postgres Write1", simulation.Write1)
 }
 
 func simulatePostgresLatency(db *sql.DB) (Simulation, error) {
