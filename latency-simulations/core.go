@@ -574,14 +574,16 @@ func calculateLatencyStatsNs(latencies []time.Duration) (LatencyStats, error) {
 }
 
 type LatencyLog struct {
-	Label         string  `db:"label"`
-	MedianLatency float64 `db:"median_latency"`
-	P10Latency    float64 `db:"p10_latency"`
-	P25Latency    float64 `db:"p25_latency"`
-	P75Latency    float64 `db:"p75_latency"`
-	P90Latency    float64 `db:"p90_latency"`
-	P95Latency    float64 `db:"p95_latency"`
-	Count         float64 `db:"count"`
+	Label         string    `db:"label"`
+	MedianLatency float64   `db:"median_latency"`
+	P10Latency    float64   `db:"p10_latency"`
+	P25Latency    float64   `db:"p25_latency"`
+	P75Latency    float64   `db:"p75_latency"`
+	P90Latency    float64   `db:"p90_latency"`
+	P95Latency    float64   `db:"p95_latency"`
+	Count         float64   `db:"count"`
+	CreatedAt     time.Time `db:"created_at"`
+	UpdatedAt     time.Time `db:"updated_at"`
 }
 
 // Logs the latency stats to the database.
