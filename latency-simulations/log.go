@@ -65,17 +65,28 @@ func init() {
 	initPostgres()
 }
 
+type LatencyLog struct {
+	Label         string  `db:"label"`
+	MedianLatency float64 `db:"median_latency"`
+	P10Latency    float64 `db:"p10_latency"`
+	P25Latency    float64 `db:"p25_latency"`
+	P75Latency    float64 `db:"p75_latency"`
+	P90Latency    float64 `db:"p90_latency"`
+	P95Latency    float64 `db:"p95_latency"`
+	Count         float64 `db:"count"`
+}
+
 // Logs the latency stats to the database.
 func logLatency(label string, latency LatencyStats) error {
-	_, err := db.NamedExec(`INSERT INTO latency_logs (label, median_latency, p10_latency, p25_latency, p75_latency, p90_latency, p95_latency, count) VALUES (:label, :median_latency, :p10_latency, :p25_latency, :p75_latency, :p90_latency, :p95_latency, :count)`, map[string]interface{}{
-		"label":          label,
-		"median_latency": latency.MedianLatency,
-		"p10_latency":    latency.P10Latency,
-		"p25_latency":    latency.P25Latency,
-		"p75_latency":    latency.P75Latency,
-		"p90_latency":    latency.P90Latency,
-		"p95_latency":    latency.P95Latency,
-		"count":          latency.Count,
+	_, err := db.NamedExec(`INSERT INTO latency_logs (label, median_latency, p10_latency, p25_latency, p75_latency, p90_latency, p95_latency, count) VALUES (:label, :median_latency, :p10_latency, :p25_latency, :p75_latency, :p90_latency, :p95_latency, :count)`, LatencyLog{
+		Label:         label,
+		MedianLatency: latency.MedianLatency,
+		P10Latency:    latency.P10Latency,
+		P25Latency:    latency.P25Latency,
+		P75Latency:    latency.P75Latency,
+		P90Latency:    latency.P90Latency,
+		P95Latency:    latency.P95Latency,
+		Count:         latency.Count,
 	})
 	return err
 }

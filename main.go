@@ -2,7 +2,7 @@ package main
 
 import (
 	"go-on-rails/auth"
-	_ "go-on-rails/latency-simulations"
+	latency_simulations "go-on-rails/latency-simulations"
 	"go-on-rails/marketing"
 	"log"
 
@@ -24,6 +24,7 @@ func main() {
 	app.Static("/", "./public")
 	marketing.AddRoutes(app)
 	auth.AddRoutes(app)
+	latency_simulations.AddRoutes(app)
 
 	err := app.Listen(":3000")
 	if err != nil {

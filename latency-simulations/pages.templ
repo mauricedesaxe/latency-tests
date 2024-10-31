@@ -1,0 +1,71 @@
+package latency_simulations
+
+import (
+	"fmt"
+	"go-on-rails/common"
+)
+
+templ home_page(logs []LatencyLog) {
+	@common.Base("Latency Simulations") {
+		<main class="container mx-auto px-4 py-4 space-y-6">
+			<div class="lg:px-8 px-4 sm:px-6">
+				<div class="sm:flex sm:items-center">
+					<div class="sm:flex-auto">
+						<h2 class="dark:text-gray-100 font-semibold text-base text-gray-900">Latency Logs</h2>
+						<p class="dark:text-gray-300 mt-2 text-gray-700 text-sm">A list of all latency measurements including percentile breakdowns.</p>
+					</div>
+				</div>
+				<div class="flow-root mt-8">
+					<div class="-mx-4 -my-2 lg:-mx-8 overflow-x-auto sm:-mx-6">
+						<div class="align-middle inline-block lg:px-8 min-w-full py-2 sm:px-6">
+							<table class="dark:divide-gray-700 divide-gray-300 divide-y min-w-full">
+								<thead>
+									<tr>
+										<th scope="col" class="dark:text-gray-100 font-semibold pl-4 pr-3 py-3.5 sm:pl-0 text-gray-900 text-left text-sm">Label</th>
+										<th scope="col" class="dark:text-gray-100 font-semibold px-3 py-3.5 text-gray-900 text-left text-sm">Median</th>
+										<th scope="col" class="dark:text-gray-100 font-semibold px-3 py-3.5 text-gray-900 text-left text-sm">P10</th>
+										<th scope="col" class="dark:text-gray-100 font-semibold px-3 py-3.5 text-gray-900 text-left text-sm">P25</th>
+										<th scope="col" class="dark:text-gray-100 font-semibold px-3 py-3.5 text-gray-900 text-left text-sm">P75</th>
+										<th scope="col" class="dark:text-gray-100 font-semibold px-3 py-3.5 text-gray-900 text-left text-sm">P90</th>
+										<th scope="col" class="dark:text-gray-100 font-semibold px-3 py-3.5 text-gray-900 text-left text-sm">P95</th>
+										<th scope="col" class="dark:text-gray-100 font-semibold px-3 py-3.5 text-gray-900 text-left text-sm">Count</th>
+									</tr>
+								</thead>
+								<tbody class="dark:divide-gray-800 divide-gray-200 divide-y">
+									for _, log := range logs {
+										<tr>
+											<td class="dark:text-gray-100 font-medium pl-4 pr-3 py-4 sm:pl-0 text-gray-900 text-sm whitespace-nowrap">
+												{ log.Label }
+											</td>
+											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
+												{ fmt.Sprintf("%.2f", log.MedianLatency) } nanoseconds
+											</td>
+											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
+												{ fmt.Sprintf("%.2f", log.P10Latency) } nanoseconds
+											</td>
+											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
+												{ fmt.Sprintf("%.2f", log.P25Latency) } nanoseconds
+											</td>
+											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
+												{ fmt.Sprintf("%.2f", log.P75Latency) } nanoseconds
+											</td>
+											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
+												{ fmt.Sprintf("%.2f", log.P90Latency) } nanoseconds
+											</td>
+											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
+												{ fmt.Sprintf("%.2f", log.P95Latency) } nanoseconds
+											</td>
+											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
+												{ fmt.Sprintf("%.2f", log.Count) }
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	}
+}

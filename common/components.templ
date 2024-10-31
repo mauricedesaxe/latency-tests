@@ -30,65 +30,10 @@ templ Base(title string) {
 			@Script("loaders.js")
 		</head>
 		<body class="dark:bg-gray-900 dark:text-white">
-			<div class="bg-blue-500 flex flex-col items-center justify-between md:hidden px-4 py-2 sm:flex-row w-full">
-				<div class="container mx-auto">
-					<button
-						id="open-nav"
-						class="block hover:bg-blue-600 px-4 py-2 rounded-md text-center text-white transition-colors w-full"
-					>
-						Open navigation
-					</button>
-				</div>
-			</div>
-			<header id="nav" class="-translate-y-[200%] absolute bg-blue-500 duration-300 flex-col items-center justify-between md:flex md:static md:translate-y-0 px-4 py-2 sm:flex-row transition-transform w-full z-10">
-				<div class="container mx-auto px-4 py-4 space-y-4">
-					<nav class="flex flex-col gap-2 justify-around overflow-x-auto sm:flex-row sm:gap-6">
-						<div class="flex flex-1 flex-col gap-2 sm:flex-row sm:gap-6">
-							<a
-								class="block hover:bg-blue-600 px-4 py-2 rounded-md text-center text-white transition-colors"
-								href="/"
-							>
-								<span class="inline-block md:hidden">Home</span>
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 hidden md:block w-6">
-									<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
-								</svg>
-							</a>
-							<a
-								class="block hover:bg-blue-600 px-4 py-2 rounded-md text-center text-white transition-colors"
-								href="/protected"
-							>
-								Protected
-							</a>
-						</div>
-						<div class="flex flex-col gap-2 md:justify-end sm:flex-row sm:gap-6">
-							<a
-								class="block hover:bg-blue-600 px-4 py-2 rounded-md text-center text-white transition-colors"
-								href="/profile"
-							>
-								<div class="inline-block md:hidden">Profile</div>
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 hidden md:block w-6">
-									<path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-								</svg>
-							</a>
-						</div>
-					</nav>
-				</div>
-			</header>
-			<script>
-				const openNavBtn = document.getElementById('open-nav');
-				const nav = document.getElementById('nav');
-				openNavBtn.addEventListener('click', () => {
-					nav.classList.toggle('-translate-y-[200%]');
-					openNavBtn.textContent = nav.classList.contains('-translate-y-[200%]') ? 'Open navigation' : 'Close navigation';
-				});
-			</script>
 			{ children... }
-			<footer class="bg-gray-50 dark:bg-gray-900 dark:text-white mx-auto my-4 p-4 text-center">
-				<div class="container mx-auto">
-					<p>
-						Use <a class="hover:underline text-blue-500" href="https://getair.com">Go on Rails</a> to build 
-						amazing web applications.
-					</p>
+			<footer class="bg-white">
+				<div class="lg:px-8 max-w-7xl md:flex md:items-center md:justify-between mx-auto px-6 py-12">
+					<p class="md:mt-0 md:order-1 mt-8 text-center text-gray-600 text-sm/6">Made by <a href="https://leetsoftware.com" class="hover:text-gray-800 text-gray-600">Alex from Leet Software</a></p>
 				</div>
 			</footer>
 			<script>
