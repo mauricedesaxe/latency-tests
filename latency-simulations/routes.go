@@ -13,14 +13,14 @@ func AddRoutes(app *fiber.App) {
 
 		// Validate sort parameters
 		validSortColumns := map[string]bool{
-			"label":          true,
-			"median_latency": true,
-			"p10_latency":    true,
-			"p25_latency":    true,
-			"p75_latency":    true,
-			"p90_latency":    true,
-			"p95_latency":    true,
-			"count":          true,
+			"label":  true,
+			"median": true,
+			"p10":    true,
+			"p25":    true,
+			"p75":    true,
+			"p90":    true,
+			"p95":    true,
+			"count":  true,
 		}
 
 		if !validSortColumns[sortBy] {
@@ -31,8 +31,21 @@ func AddRoutes(app *fiber.App) {
 			sortOrder = "asc"
 		}
 
+		// Map the URL parameter to the actual column name
+		columnMapping := map[string]string{
+			"label":  "label",
+			"median": "median_latency",
+			"p10":    "p10_latency",
+			"p25":    "p25_latency",
+			"p75":    "p75_latency",
+			"p90":    "p90_latency",
+			"p95":    "p95_latency",
+			"count":  "count",
+		}
+
+		sqlColumn := columnMapping[sortBy]
 		var logs []LatencyLog
-		err := db.Select(&logs, `select * from latency_logs order by `+sortBy+" "+sortOrder)
+		err := db.Select(&logs, `SELECT * FROM latency_logs ORDER BY `+sqlColumn+` `+sortOrder)
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
