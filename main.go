@@ -1,9 +1,7 @@
 package main
 
 import (
-	"go-on-rails/auth"
 	latency_simulations "go-on-rails/latency-simulations"
-	"go-on-rails/marketing"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -22,8 +20,6 @@ func main() {
 
 	// routes
 	app.Static("/", "./public")
-	marketing.AddRoutes(app)
-	auth.AddRoutes(app)
 	latency_simulations.AddRoutes(app)
 
 	err := app.Listen(":3000")
