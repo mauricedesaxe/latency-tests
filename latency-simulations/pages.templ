@@ -61,6 +61,9 @@ templ home_page(logs []LatencyLog) {
 											<a href="?sort_by=count&sort_order=asc" class="hover:text-gray-500">Count ⬆</a>
 											<a href="?sort_by=count&sort_order=desc" class="hover:text-gray-500">⬇</a>
 										</th>
+										<th scope="col" class="dark:text-gray-100 font-semibold px-3 py-3.5 text-gray-900 text-left text-sm">
+											Created At
+										</th>
 									</tr>
 								</thead>
 								<tbody class="dark:divide-gray-800 divide-gray-200 divide-y">
@@ -89,6 +92,9 @@ templ home_page(logs []LatencyLog) {
 											</td>
 											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
 												{ fmt.Sprintf("%.2f", log.Count) }
+											</td>
+											<td class="dark:text-gray-400 px-3 py-4 text-gray-500 text-sm whitespace-nowrap">
+												{ log.CreatedAt.Format(time.DateTime) }
 											</td>
 										</tr>
 									}
