@@ -5,16 +5,17 @@ import (
 	"fmt"
 	"go-on-rails/common"
 	"math/rand"
+	"sync"
 	"time"
 
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
+var pgLock sync.Mutex
+
 func initPostgres() {
-	if err := godotenv.Load(); err != nil {
-		panic(err)
-	}
+	pgLock.Lock()
+	defer pgLock.Unlock()
 
 	sameBoxDb, err := sql.Open("postgres", common.Env.SAME_BOX_POSTGRES_URL)
 	if err != nil {

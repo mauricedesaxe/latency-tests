@@ -4,12 +4,18 @@ import (
 	"database/sql"
 	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
+var sqliteLock sync.Mutex
+
 func initSQLite() {
+	sqliteLock.Lock()
+	defer sqliteLock.Unlock()
+
 	db, err := sql.Open("sqlite3", "./db/latency_simulations.sqlite?_journal_mode=WAL&_synchronous=NORMAL&_busy_timeout=5000&_cache_size=-2000")
 	if err != nil {
 		panic(err)
