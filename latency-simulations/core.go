@@ -170,6 +170,7 @@ func simulate(simulationType SimulationType) (Simulation, error) {
 	if err != nil {
 		return Simulation{}, err
 	}
+	defer localDb.Close()
 
 	// run the simulation
 	return simulatePostgresLatency(localDb)
