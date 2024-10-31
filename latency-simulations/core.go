@@ -44,14 +44,25 @@ func simulateAll() {
 		panic(err)
 	}
 
-	// drop table if it exists; ensures a clean slate
-	_, err = db.Exec(`DROP TABLE IF EXISTS latency_logs`)
+	tx, err := db.Beginx()
 	if err != nil {
 		panic(err)
 	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+			panic(err)
+		}
+	}()
+
+	// drop table if it exists; ensures a clean slate
+	_, err = tx.Exec(`DROP TABLE IF EXISTS latency_logs`)
+	if err != nil {
+		return
+	}
 
 	// create table if it doesn't exist
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS latency_logs (
+	_, err = tx.Exec(`CREATE TABLE IF NOT EXISTS latency_logs (
 			label TEXT NOT NULL PRIMARY KEY,
 			median_latency REAL,
 			p10_latency REAL,
@@ -62,34 +73,46 @@ func simulateAll() {
 			count REAL
 		)`)
 	if err != nil {
-		panic(err)
+		return
 	}
 
 	// create index on label
-	_, err = db.Exec(`CREATE INDEX IF NOT EXISTS idx_label ON latency_logs (label)`)
+	_, err = tx.Exec(`CREATE INDEX IF NOT EXISTS idx_label ON latency_logs (label)`)
 	if err != nil {
-		panic(err)
+		return
 	}
 
-	logLatency(db, "SQLite Read1", sqliteSim.Read1)
-	logLatency(db, "SQLite Read2", sqliteSim.Read2)
-	logLatency(db, "SQLite Write1", sqliteSim.Write1)
+	logs := []struct {
+		label string
+		stats LatencyStats
+	}{
+		{"SQLite Read1", sqliteSim.Read1},
+		{"SQLite Read2", sqliteSim.Read2},
+		{"SQLite Write1", sqliteSim.Write1},
+		{"SameBox Read1", sameBoxSim.Read1},
+		{"SameBox Read2", sameBoxSim.Read2},
+		{"SameBox Write1", sameBoxSim.Write1},
+		{"IntraAZ Read1", intraAZSim.Read1},
+		{"IntraAZ Read2", intraAZSim.Read2},
+		{"IntraAZ Write1", intraAZSim.Write1},
+		{"InterAZ Read1", interAZSim.Read1},
+		{"InterAZ Read2", interAZSim.Read2},
+		{"InterAZ Write1", interAZSim.Write1},
+		{"InterRegion Read1", interRegionSim.Read1},
+		{"InterRegion Read2", interRegionSim.Read2},
+		{"InterRegion Write1", interRegionSim.Write1},
+	}
+	for _, log := range logs {
+		err = logLatency(tx, log.label, log.stats)
+		if err != nil {
+			return
+		}
+	}
 
-	logLatency(db, "SameBox Read1", sameBoxSim.Read1)
-	logLatency(db, "SameBox Read2", sameBoxSim.Read2)
-	logLatency(db, "SameBox Write1", sameBoxSim.Write1)
-
-	logLatency(db, "IntraAZ Read1", intraAZSim.Read1)
-	logLatency(db, "IntraAZ Read2", intraAZSim.Read2)
-	logLatency(db, "IntraAZ Write1", intraAZSim.Write1)
-
-	logLatency(db, "InterAZ Read1", interAZSim.Read1)
-	logLatency(db, "InterAZ Read2", interAZSim.Read2)
-	logLatency(db, "InterAZ Write1", interAZSim.Write1)
-
-	logLatency(db, "InterRegion Read1", interRegionSim.Read1)
-	logLatency(db, "InterRegion Read2", interRegionSim.Read2)
-	logLatency(db, "InterRegion Write1", interRegionSim.Write1)
+	err = tx.Commit()
+	if err != nil {
+		return
+	}
 }
 
 type SimulationType string
@@ -543,7 +566,7 @@ type LatencyLog struct {
 }
 
 // Logs the latency stats to the database.
-func logLatency(db *sqlx.DB, label string, latency LatencyStats) error {
+func logLatency(db *sqlx.Tx, label string, latency LatencyStats) error {
 	_, err := db.NamedExec(`
 		INSERT INTO latency_logs (label, median_latency, p10_latency, p25_latency, p75_latency, p90_latency, p95_latency, count) 
 		VALUES (:label, :median_latency, :p10_latency, :p25_latency, :p75_latency, :p90_latency, :p95_latency, :count)
