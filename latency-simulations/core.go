@@ -18,11 +18,6 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-
-	err = simulateAll()
-	if err != nil {
-		panic(err)
-	}
 }
 
 var allLock sync.Mutex
