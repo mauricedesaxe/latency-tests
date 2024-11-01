@@ -2,6 +2,7 @@ package latency_simulations
 
 import (
 	"go-on-rails/common"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -49,6 +50,13 @@ func AddRoutes(app *fiber.App) {
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
+
+		// Set cache headers
+		common.SetCacheHeader(c, common.CacheOptions{
+			MaxAge:               time.Minute * 5, // Cache for 5 minutes
+			StaleWhileRevalidate: time.Minute * 1, // Allow stale content for 1 minute while revalidating
+			StaleIfError:         time.Minute * 5, // Allow stale content for 5 minutes on error
+		})
 
 		return common.RenderTempl(c, home_page(logs))
 	})
